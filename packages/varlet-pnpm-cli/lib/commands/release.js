@@ -149,7 +149,7 @@ function release() {
                     type = ret[name_1];
                     isPreRelease = type.startsWith('pre');
                     expectVersion = semver_1.default.inc(currentVersion, type, "alpha.".concat(Date.now()));
-                    expectVersion = isPreRelease ? expectVersion.slice(-2) : expectVersion;
+                    expectVersion = isPreRelease ? expectVersion.slice(0, -2) : expectVersion;
                     name_1 = 'version confirm';
                     return [4 /*yield*/, inquirer_1.default.prompt([
                             {
