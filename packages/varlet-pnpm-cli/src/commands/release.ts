@@ -47,8 +47,9 @@ type packageJsonMap = {
 type packageJsonMaps = packageJsonMap[]
 
 function updateVersion(version: string): packageJsonMaps {
-  const packageJsons = glob.sync('*/*/package.json', { ignore: ['**/node_modules/**/package.json'] })
+  const packageJsons = glob.sync('packages/*/package.json')
   packageJsons.push('package.json')
+
   return packageJsons.map((path: string) => {
     const file = resolve(CWD, path)
     const config = require(file)

@@ -111,7 +111,7 @@ function pushGit(version, message) {
     });
 }
 function updateVersion(version) {
-    var packageJsons = glob_1.default.sync('*/*/package.json', { ignore: ['**/node_modules/**/package.json'] });
+    var packageJsons = glob_1.default.sync('packages/*/package.json');
     packageJsons.push('package.json');
     return packageJsons.map(function (path) {
         var file = (0, path_1.resolve)(constant_1.CWD, path);
