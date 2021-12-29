@@ -23,9 +23,9 @@ async function isWorktreeEmpty() {
 
 async function publish() {
   const ret = await execa('pnpm', [
+    '-r',
     'publish',
     '--no-git-checks',
-    '-r',
     '--access',
     'public'
   ])

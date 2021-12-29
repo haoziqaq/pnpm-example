@@ -75,9 +75,9 @@ function publish() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, (0, execa_1.default)('pnpm', [
+                        '-r',
                         'publish',
                         '--no-git-checks',
-                        '-r',
                         '--access',
                         'public'
                     ])];
