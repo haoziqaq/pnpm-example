@@ -71,11 +71,12 @@ function isWorktreeEmpty() {
 }
 function publish() {
     return __awaiter(this, void 0, void 0, function () {
+        var ret;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, (0, execa_1.default)('pnpm', ['publish', '-r', '--access', 'public'])];
                 case 1:
-                    _a.sent();
+                    ret = _a.sent();
                     return [2 /*return*/];
             }
         });
@@ -119,7 +120,7 @@ function updateVersion(version, isPreRelease) {
 }
 function release() {
     return __awaiter(this, void 0, void 0, function () {
-        var currentVersion, name_1, ret, type, expectVersion, isPreRelease, confirm_1, error_1;
+        var currentVersion, name_1, ret, type, isPreRelease, expectVersion, confirm_1, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -146,8 +147,9 @@ function release() {
                 case 2:
                     ret = _a.sent();
                     type = ret[name_1];
-                    expectVersion = semver_1.default.inc(currentVersion, type, "alpha.".concat(Date.now()));
                     isPreRelease = type.startsWith('pre');
+                    expectVersion = semver_1.default.inc(currentVersion, type, "alpha.".concat(Date.now()));
+                    expectVersion = isPreRelease ? expectVersion.slice(-2) : expectVersion;
                     name_1 = 'version confirm';
                     return [4 /*yield*/, inquirer_1.default.prompt([
                             {

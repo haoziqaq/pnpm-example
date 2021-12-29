@@ -22,7 +22,8 @@ async function isWorktreeEmpty() {
 }
 
 async function publish() {
-  await execa('pnpm', ['publish', '-r', '--access', 'public'])
+  const ret = await execa('pnpm', ['publish', '-r', '--access', 'public'])
+
 }
 
 async function pushGit(version: string, message: string) {
@@ -74,8 +75,9 @@ export async function release() {
     ])
 
     const type = ret[name]
-    const expectVersion = semver.inc(currentVersion, type, `alpha.${Date.now()}`)
     const isPreRelease = type.startsWith('pre')
+    let expectVersion = semver.inc(currentVersion, type, `alpha.${Date.now()}`)
+    expectVersion = isPreRelease ? expectVersion.slice(-2) : expectVersion
 
     name = 'version confirm'
     const confirm = await inquirer.prompt([
