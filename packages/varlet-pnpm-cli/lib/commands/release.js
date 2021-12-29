@@ -74,7 +74,13 @@ function publish() {
         var ret;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, execa_1.default)('pnpm', ['publish', '-r', '--access', 'public'])];
+                case 0: return [4 /*yield*/, (0, execa_1.default)('pnpm', [
+                        'publish',
+                        '--no-git-checks',
+                        '-r',
+                        '--access',
+                        'public'
+                    ])];
                 case 1:
                     ret = _a.sent();
                     logger_1.default.info(ret.stdout);
