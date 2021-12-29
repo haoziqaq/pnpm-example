@@ -47,6 +47,6 @@ export async function release() {
 
   const expectVersion = semver.inc(currentVersion, type)
 
-  const res = glob.sync('package.json')
+  const res = glob.sync('**/package.json')
   console.log(res)
 }

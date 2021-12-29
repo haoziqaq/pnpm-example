@@ -97,7 +97,7 @@ function release() {
                     type = ret[name];
                     isPre = type.startsWith('pre');
                     expectVersion = semver_1.default.inc(currentVersion, type);
-                    res = glob_1.default.sync('package.json');
+                    res = glob_1.default.sync('**/package.json');
                     console.log(res);
                     return [2 /*return*/];
             }
