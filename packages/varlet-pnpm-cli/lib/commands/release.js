@@ -129,7 +129,7 @@ function release() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 8, , 9]);
+                    _a.trys.push([0, 7, , 8]);
                     currentVersion = require((0, path_1.resolve)(constant_1.CWD, 'package.json')).version;
                     if (!currentVersion) {
                         logger_1.default.error('Your package is missing the version field');
@@ -169,29 +169,27 @@ function release() {
                         return [2 /*return*/];
                     }
                     packageJsonMaps = updateVersion(expectVersion);
-                    if (!isPreRelease) return [3 /*break*/, 4];
-                    packageJsonMaps.forEach(function (_a) {
-                        var file = _a.file, content = _a.content;
-                        return (0, fs_extra_1.writeFileSync)(file, content);
-                    });
-                    return [3 /*break*/, 6];
-                case 4: 
-                // TODO changelog
-                return [4 /*yield*/, pushGit(expectVersion, "v".concat(expectVersion))];
-                case 5:
-                    // TODO changelog
+                    if (!!isPreRelease) return [3 /*break*/, 5];
+                    return [4 /*yield*/, pushGit(expectVersion, "v".concat(expectVersion))];
+                case 4:
                     _a.sent();
-                    _a.label = 6;
-                case 6: return [4 /*yield*/, publish()];
-                case 7:
+                    _a.label = 5;
+                case 5: return [4 /*yield*/, publish()];
+                case 6:
                     _a.sent();
+                    if (isPreRelease) {
+                        packageJsonMaps.forEach(function (_a) {
+                            var file = _a.file, content = _a.content;
+                            return (0, fs_extra_1.writeFileSync)(file, content);
+                        });
+                    }
                     logger_1.default.success("Release version ".concat(expectVersion, " successfully!"));
-                    return [3 /*break*/, 9];
-                case 8:
+                    return [3 /*break*/, 8];
+                case 7:
                     error_1 = _a.sent();
                     logger_1.default.error(error_1.toString());
-                    return [3 /*break*/, 9];
-                case 9: return [2 /*return*/];
+                    return [3 /*break*/, 8];
+                case 8: return [2 /*return*/];
             }
         });
     });

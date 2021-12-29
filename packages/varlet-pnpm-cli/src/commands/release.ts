@@ -104,14 +104,15 @@ export async function release() {
 
     const packageJsonMaps = updateVersion(expectVersion)
 
-    if (isPreRelease) {
-      packageJsonMaps.forEach(({ file, content }) => writeFileSync(file, content))
-    } else {
-      // TODO changelog
+    if (!isPreRelease) {
       await pushGit(expectVersion, `v${expectVersion}`)
     }
 
     await publish()
+
+    if (isPreRelease) {
+      packageJsonMaps.forEach(({ file, content }) => writeFileSync(file, content))
+    }
 
     logger.success(`Release version ${expectVersion} successfully!`)
   } catch (error: any) {
