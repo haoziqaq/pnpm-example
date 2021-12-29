@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "devDependencies": {
-    "@varlet-pnpm/a": "workspace: *",
-    "@varlet-pnpm/b": "workspace: *",
-    "@varlet-pnpm/c": "workspace: *"
+    "@varlet-pnpm/a": "workspace:*",
+    "@varlet-pnpm/b": "workspace:*",
+    "@varlet-pnpm/c": "workspace:*"
   },
   "packageManager": "pnpm@6.24.3"
 }

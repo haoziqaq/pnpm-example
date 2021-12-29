@@ -4,9 +4,9 @@ importers:
 
   .:
     specifiers:
-      '@varlet-pnpm/a': 'workspace: *'
-      '@varlet-pnpm/b': 'workspace: *'
-      '@varlet-pnpm/c': 'workspace: *'
+      '@varlet-pnpm/a': workspace:*
+      '@varlet-pnpm/b': workspace:*
+      '@varlet-pnpm/c': workspace:*
     devDependencies:
       '@varlet-pnpm/a': link:packages/varlet-pnpm-a
       '@varlet-pnpm/b': link:packages/varlet-pnpm-b
@@ -19,4 +19,9 @@ importers:
     specifiers: {}
 
   packages/varlet-pnpm-c:
-    specifiers: {}
+    specifiers:
+      '@varlet-pnpm/a': workspace:*
+      '@varlet-pnpm/b': workspace:*
+    dependencies:
+      '@varlet-pnpm/a': link:../varlet-pnpm-a
+      '@varlet-pnpm/b': link:../varlet-pnpm-b
