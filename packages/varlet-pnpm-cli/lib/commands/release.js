@@ -47,12 +47,13 @@ var semver_1 = __importDefault(require("semver"));
 var glob_1 = __importDefault(require("glob"));
 var constant_1 = require("../shared/constant");
 var path_1 = require("path");
+var fs_extra_1 = require("fs-extra");
 var releaseTypes = [
     'major',
-    'premajor',
     'minor',
-    'preminor',
     'patch',
+    'premajor',
+    'preminor',
     'prepatch'
 ];
 function isWorktreeEmpty() {
@@ -68,38 +69,116 @@ function isWorktreeEmpty() {
         });
     });
 }
-function release() {
+function publish() {
     return __awaiter(this, void 0, void 0, function () {
-        var currentVersion, name, ret, type, isPre, expectVersion, res;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, isWorktreeEmpty()];
+                case 0: return [4 /*yield*/, (0, execa_1.default)('pnpm', ['publish', '-r', '--access', 'public'])];
                 case 1:
-                    if (!(_a.sent())) {
-                        logger_1.default.error('Git worktree is not empty, please commit changed');
-                        return [2 /*return*/];
-                    }
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function pushGit(version, message) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, (0, execa_1.default)('git', ['add', '.'])];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, (0, execa_1.default)('git', ['commit', '-m', message])];
+                case 2:
+                    _a.sent();
+                    return [4 /*yield*/, (0, execa_1.default)('git', ['tag', version])];
+                case 3:
+                    _a.sent();
+                    return [4 /*yield*/, (0, execa_1.default)('git', ['push'])];
+                case 4:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function updateVersion(version, isPreRelease) {
+    var packageJsons = glob_1.default.sync('*/*/package.json', { ignore: ['**/node_modules/**/package.json'] });
+    packageJsons.push('package.json');
+    packageJsons.forEach(function (path) {
+        var file = (0, path_1.resolve)(constant_1.CWD, path);
+        var config = require(file);
+        var currentVersion = config.version;
+        config.version = version;
+        (0, fs_extra_1.writeFileSync)(file, JSON.stringify(config, null, 2));
+        if (isPreRelease) {
+            config.version = currentVersion;
+            (0, fs_extra_1.writeFileSync)(file, JSON.stringify(config, null, 2));
+        }
+    });
+}
+function release() {
+    return __awaiter(this, void 0, void 0, function () {
+        var currentVersion, name_1, ret, type, expectVersion, isPreRelease, confirm_1, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 7, , 8]);
                     currentVersion = require((0, path_1.resolve)(constant_1.CWD, 'package.json')).version;
                     if (!currentVersion) {
                         logger_1.default.error('Your package is missing the version field');
                         return [2 /*return*/];
                     }
-                    name = 'Please select release type';
+                    return [4 /*yield*/, isWorktreeEmpty()];
+                case 1:
+                    if (!(_a.sent())) {
+                        logger_1.default.error('Git worktree is not empty, please commit changed');
+                        return [2 /*return*/];
+                    }
+                    name_1 = 'Please select release type';
                     return [4 /*yield*/, inquirer_1.default.prompt([
                             {
-                                name: name,
+                                name: name_1,
                                 type: 'list',
                                 choices: releaseTypes,
                             },
                         ])];
                 case 2:
                     ret = _a.sent();
-                    type = ret[name];
-                    isPre = type.startsWith('pre');
-                    expectVersion = semver_1.default.inc(currentVersion, type);
-                    res = glob_1.default.sync('**/package.json');
-                    console.log(res);
-                    return [2 /*return*/];
+                    type = ret[name_1];
+                    expectVersion = semver_1.default.inc(currentVersion, type, "alpha.".concat(Date.now()));
+                    isPreRelease = type.startsWith('pre');
+                    name_1 = 'version confirm';
+                    return [4 /*yield*/, inquirer_1.default.prompt([
+                            {
+                                name: name_1,
+                                type: 'confirm',
+                                message: "All packages version ".concat(currentVersion, " -> ").concat(expectVersion, ":")
+                            },
+                        ])];
+                case 3:
+                    confirm_1 = _a.sent();
+                    if (!confirm_1[name_1]) {
+                        return [2 /*return*/];
+                    }
+                    updateVersion(expectVersion, type.startsWith('pre'));
+                    if (!!isPreRelease) return [3 /*break*/, 5];
+                    // TODO changelog
+                    return [4 /*yield*/, pushGit(expectVersion, "v".concat(expectVersion))];
+                case 4:
+                    // TODO changelog
+                    _a.sent();
+                    _a.label = 5;
+                case 5: return [4 /*yield*/, publish()];
+                case 6:
+                    _a.sent();
+                    logger_1.default.success("Release version ".concat(expectVersion, " successfully!"));
+                    return [3 /*break*/, 8];
+                case 7:
+                    error_1 = _a.sent();
+                    logger_1.default.error(error_1.toString());
+                    return [3 /*break*/, 8];
+                case 8: return [2 /*return*/];
             }
         });
     });
