@@ -23,7 +23,7 @@ async function isWorktreeEmpty() {
 
 async function publish() {
   const ret = await execa('pnpm', ['publish', '-r', '--access', 'public'])
-
+  logger.info(ret.stdout)
 }
 
 async function pushGit(version: string, message: string) {
