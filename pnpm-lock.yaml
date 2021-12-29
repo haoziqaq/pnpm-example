@@ -1,0 +1,22 @@
+lockfileVersion: 5.3
+
+importers:
+
+  .:
+    specifiers:
+      '@varlet-pnpm/a': 'workspace: *'
+      '@varlet-pnpm/b': 'workspace: *'
+      '@varlet-pnpm/c': 'workspace: *'
+    devDependencies:
+      '@varlet-pnpm/a': link:packages/varlet-pnpm-a
+      '@varlet-pnpm/b': link:packages/varlet-pnpm-b
+      '@varlet-pnpm/c': link:packages/varlet-pnpm-c
+
+  packages/varlet-pnpm-a:
+    specifiers: {}
+
+  packages/varlet-pnpm-b:
+    specifiers: {}
+
+  packages/varlet-pnpm-c:
+    specifiers: {}
