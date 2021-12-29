@@ -110,28 +110,26 @@ function pushGit(version, message) {
         });
     });
 }
-function updateVersion(version, isPreRelease) {
+function updateVersion(version) {
     var packageJsons = glob_1.default.sync('*/*/package.json', { ignore: ['**/node_modules/**/package.json'] });
     packageJsons.push('package.json');
-    packageJsons.forEach(function (path) {
+    return packageJsons.map(function (path) {
         var file = (0, path_1.resolve)(constant_1.CWD, path);
         var config = require(file);
         var currentVersion = config.version;
         config.version = version;
         (0, fs_extra_1.writeFileSync)(file, JSON.stringify(config, null, 2));
-        if (isPreRelease) {
-            config.version = currentVersion;
-            (0, fs_extra_1.writeFileSync)(file, JSON.stringify(config, null, 2));
-        }
+        config.version = currentVersion;
+        return { file: file, content: JSON.stringify(config, null, 2) };
     });
 }
 function release() {
     return __awaiter(this, void 0, void 0, function () {
-        var currentVersion, name_1, ret, type, isPreRelease, expectVersion, confirm_1, error_1;
+        var currentVersion, name_1, ret, type, isPreRelease, expectVersion, confirm_1, packageJsonMaps, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 7, , 8]);
+                    _a.trys.push([0, 8, , 9]);
                     currentVersion = require((0, path_1.resolve)(constant_1.CWD, 'package.json')).version;
                     if (!currentVersion) {
                         logger_1.default.error('Your package is missing the version field');
@@ -170,24 +168,30 @@ function release() {
                     if (!confirm_1[name_1]) {
                         return [2 /*return*/];
                     }
-                    updateVersion(expectVersion, type.startsWith('pre'));
-                    if (!!isPreRelease) return [3 /*break*/, 5];
-                    // TODO changelog
-                    return [4 /*yield*/, pushGit(expectVersion, "v".concat(expectVersion))];
-                case 4:
+                    packageJsonMaps = updateVersion(expectVersion);
+                    if (!isPreRelease) return [3 /*break*/, 4];
+                    packageJsonMaps.forEach(function (_a) {
+                        var file = _a.file, content = _a.content;
+                        return (0, fs_extra_1.writeFileSync)(file, content);
+                    });
+                    return [3 /*break*/, 6];
+                case 4: 
+                // TODO changelog
+                return [4 /*yield*/, pushGit(expectVersion, "v".concat(expectVersion))];
+                case 5:
                     // TODO changelog
                     _a.sent();
-                    _a.label = 5;
-                case 5: return [4 /*yield*/, publish()];
-                case 6:
+                    _a.label = 6;
+                case 6: return [4 /*yield*/, publish()];
+                case 7:
                     _a.sent();
                     logger_1.default.success("Release version ".concat(expectVersion, " successfully!"));
-                    return [3 /*break*/, 8];
-                case 7:
+                    return [3 /*break*/, 9];
+                case 8:
                     error_1 = _a.sent();
                     logger_1.default.error(error_1.toString());
-                    return [3 /*break*/, 8];
-                case 8: return [2 /*return*/];
+                    return [3 /*break*/, 9];
+                case 9: return [2 /*return*/];
             }
         });
     });

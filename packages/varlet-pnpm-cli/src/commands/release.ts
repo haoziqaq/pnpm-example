@@ -39,10 +39,17 @@ async function pushGit(version: string, message: string) {
   await execa('git', ['push'])
 }
 
-function updateVersion(version: string, isPreRelease: boolean) {
+type packageJsonMap = {
+  file: string
+  content: string
+}
+
+type packageJsonMaps = packageJsonMap[]
+
+function updateVersion(version: string): packageJsonMaps {
   const packageJsons = glob.sync('*/*/package.json', { ignore: ['**/node_modules/**/package.json'] })
   packageJsons.push('package.json')
-  packageJsons.forEach((path: string) => {
+  return packageJsons.map((path: string) => {
     const file = resolve(CWD, path)
     const config = require(file)
     const currentVersion = config.version
@@ -50,10 +57,8 @@ function updateVersion(version: string, isPreRelease: boolean) {
     config.version = version
     writeFileSync(file, JSON.stringify(config, null, 2))
 
-    if (isPreRelease) {
-      config.version = currentVersion
-      writeFileSync(file, JSON.stringify(config, null, 2))
-    }
+    config.version = currentVersion
+    return { file, content: JSON.stringify(config, null, 2) }
   })
 }
 
@@ -97,9 +102,11 @@ export async function release() {
       return
     }
 
-    updateVersion(expectVersion, type.startsWith('pre'))
+    const packageJsonMaps = updateVersion(expectVersion)
 
-    if (!isPreRelease) {
+    if (isPreRelease) {
+      packageJsonMaps.forEach(({ file, content }) => writeFileSync(file, content))
+    } else {
       // TODO changelog
       await pushGit(expectVersion, `v${expectVersion}`)
     }
