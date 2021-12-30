@@ -3,14 +3,20 @@
   "version": "0.1.1",
   "license": "MIT",
   "scripts": {
+    "prepare": "husky install",
+    "preinstall": "npx only-allow pnpm",
     "changelog": "varlet-cli changelog",
     "release": "varlet-cli release"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,vue,less}": "prettier --write"
   },
   "devDependencies": {
     "@varlet-pnpm/a": "workspace:*",
     "@varlet-pnpm/b": "workspace:*",
     "@varlet-pnpm/c": "workspace:*",
-    "@varlet-pnpm/cli": "workspace:*"
+    "@varlet-pnpm/cli": "workspace:*",
+    "lint-staged": "^12.1.4"
   },
   "packageManager": "pnpm@6.24.3"
 }
