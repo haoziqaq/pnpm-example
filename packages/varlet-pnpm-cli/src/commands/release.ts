@@ -33,7 +33,7 @@ async function publish() {
     'public'
   ])
   logger.info(ret.stdout)
-  s.stop()
+  s.succeed('Publish all packages successfully')
 }
 
 async function pushGit(version: string, message: string) {
@@ -43,7 +43,7 @@ async function pushGit(version: string, message: string) {
   await execa('git', ['tag', version])
   const ret = await execa('git', ['push'])
   logger.info(ret.stdout)
-  s.stop()
+  s.succeed('Push remote repository successfully')
 }
 
 type packageJsonMap = {
