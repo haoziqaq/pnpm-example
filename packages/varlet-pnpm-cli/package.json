@@ -1,6 +1,6 @@
 {
   "name": "@varlet-pnpm/cli",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "cli of varlet",
   "bin": {
     "varlet-cli": "./lib/index.js"
