@@ -2,6 +2,7 @@ import ora from "ora"
 import conventionalChangelog from 'conventional-changelog'
 import { createWriteStream } from 'fs-extra'
 import { CHANGELOG_MD } from "../shared/constant";
+import logger from "../shared/logger";
 
 interface ChangelogCommandOptions {
   count?: number
