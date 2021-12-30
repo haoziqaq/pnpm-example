@@ -87,8 +87,8 @@ function publish() {
                         ])];
                 case 1:
                     ret = _a.sent();
-                    logger_1.default.info(ret.stdout);
                     s.succeed('Publish all packages successfully');
+                    logger_1.default.info(ret.stdout);
                     return [2 /*return*/];
             }
         });
@@ -113,8 +113,8 @@ function pushGit(version, message) {
                     return [4 /*yield*/, (0, execa_1.default)('git', ['push'])];
                 case 4:
                     ret = _a.sent();
-                    logger_1.default.info(ret.stdout);
                     s.succeed('Push remote repository successfully');
+                    logger_1.default.info(ret.stdout);
                     return [2 /*return*/];
             }
         });
