@@ -316,7 +316,7 @@ function release() {
           }
           packageJsonMaps = updateVersion(expectVersion);
           if (!!isPreRelease) return [3 /*break*/, 6];
-          return [4 /*yield*/, (0, changelog_1.changelog)({ count: 2 })];
+          return [4 /*yield*/, (0, changelog_1.changelog)()];
         case 4:
           _a.sent();
           return [
