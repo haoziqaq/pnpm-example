@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.JEST_STYLE_MOCK = exports.JEST_MEDIA_MOCK = exports.JEST_CONFIG = exports.HL_WEB_TYPES_JSON = exports.HL_ATTRIBUTES_JSON = exports.HL_TAGS_JSON = exports.HL_DIR = exports.HL_MD = exports.HL_TITLE_SLOTS_RE = exports.HL_TITLE_EVENTS_RE = exports.HL_TITLE_ATTRIBUTES_RE = exports.HL_API_RE = exports.HL_COMPONENT_NAME_RE = exports.SITE_CONFIG = exports.SITE_MOBILE_ROUTES = exports.SITE_PC_ROUTES = exports.SITE_DIR = exports.SITE_PUBLIC_PATH = exports.SITE_OUTPUT_PATH = exports.SITE = exports.CLI_PACKAGE_JSON = exports.UI_PACKAGE_JSON = exports.GENERATORS_DIR = exports.TESTS_DIR_NAME = exports.EXAMPLE_DIR_INDEX = exports.DOCS_DIR_NAME = exports.EXAMPLE_LOCALE_DIR_NAME = exports.EXAMPLE_DIR_NAME = exports.STYLE_DIR_NAME = exports.PUBLIC_DIR_INDEXES = exports.SCRIPTS_EXTENSIONS = exports.VITE_RESOLVE_EXTENSIONS = exports.ESLINT_EXTENSIONS = exports.ROOT_DOCS_DIR = exports.TYPES_DIR = exports.UMD_DIR = exports.LIB_DIR = exports.ES_DIR = exports.SRC_DIR = exports.VARLET_CONFIG = exports.CWD = void 0;
+exports.JEST_STYLE_MOCK = exports.JEST_MEDIA_MOCK = exports.JEST_CONFIG = exports.HL_WEB_TYPES_JSON = exports.HL_ATTRIBUTES_JSON = exports.HL_TAGS_JSON = exports.HL_DIR = exports.HL_MD = exports.HL_TITLE_SLOTS_RE = exports.HL_TITLE_EVENTS_RE = exports.HL_TITLE_ATTRIBUTES_RE = exports.HL_API_RE = exports.HL_COMPONENT_NAME_RE = exports.SITE_CONFIG = exports.SITE_MOBILE_ROUTES = exports.SITE_PC_ROUTES = exports.SITE_DIR = exports.SITE_PUBLIC_PATH = exports.SITE_OUTPUT_PATH = exports.SITE = exports.CHANGELOG_MD = exports.CLI_PACKAGE_JSON = exports.UI_PACKAGE_JSON = exports.GENERATORS_DIR = exports.TESTS_DIR_NAME = exports.EXAMPLE_DIR_INDEX = exports.DOCS_DIR_NAME = exports.EXAMPLE_LOCALE_DIR_NAME = exports.EXAMPLE_DIR_NAME = exports.STYLE_DIR_NAME = exports.PUBLIC_DIR_INDEXES = exports.SCRIPTS_EXTENSIONS = exports.VITE_RESOLVE_EXTENSIONS = exports.ESLINT_EXTENSIONS = exports.ROOT_DOCS_DIR = exports.TYPES_DIR = exports.UMD_DIR = exports.LIB_DIR = exports.ES_DIR = exports.SRC_DIR = exports.VARLET_CONFIG = exports.CWD = void 0;
 var path_1 = require("path");
 exports.CWD = process.cwd();
 exports.VARLET_CONFIG = (0, path_1.resolve)(exports.CWD, 'varlet.config.js');
@@ -23,6 +23,7 @@ exports.TESTS_DIR_NAME = '__tests__';
 exports.GENERATORS_DIR = (0, path_1.resolve)(__dirname, '../../generators');
 exports.UI_PACKAGE_JSON = (0, path_1.resolve)(exports.CWD, 'package.json');
 exports.CLI_PACKAGE_JSON = (0, path_1.resolve)(__dirname, '../../package.json');
+exports.CHANGELOG_MD = (0, path_1.resolve)(exports.CWD, 'CHANGELOG.md');
 // site
 exports.SITE = (0, path_1.resolve)(__dirname, '../../site');
 exports.SITE_OUTPUT_PATH = (0, path_1.resolve)(exports.CWD, 'site');

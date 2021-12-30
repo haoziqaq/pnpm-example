@@ -10,6 +10,7 @@ import { lint } from './commands/lint'
 import { gen } from './commands/gen'
 import { preview } from './commands/preview'
 import { release } from './commands/release'
+import { changelog } from "./commands/changelog";
 
 const program = new Command()
 
@@ -43,6 +44,12 @@ program
   .option('-c, --component <componentName>', 'Test a specific component')
   .option('-cc --clearCache', 'Clear test cache')
   .action(jest)
+
+program
+  .command('changelog')
+  .option('--count <count>', 'Release count')
+  .description('Generate changelog')
+  .action(changelog)
 
 program
   .command('release')

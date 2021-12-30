@@ -1,11 +1,13 @@
 import inquirer from 'inquirer'
+import ora from "ora";
 import execa from 'execa'
 import logger from '../shared/logger'
 import semver from 'semver'
 import glob from 'glob'
-import { CWD } from "../shared/constant";
-import { resolve } from "path";
-import { writeFileSync } from "fs-extra";
+import { CWD } from "../shared/constant"
+import { resolve } from "path"
+import { writeFileSync } from "fs-extra"
+import { changelog } from "./changelog";
 
 const releaseTypes = [
   'major',
@@ -22,6 +24,7 @@ async function isWorktreeEmpty() {
 }
 
 async function publish() {
+  const s = ora().start('Publishing all packages')
   const ret = await execa('pnpm', [
     '-r',
     'publish',
@@ -30,13 +33,17 @@ async function publish() {
     'public'
   ])
   logger.info(ret.stdout)
+  s.stop()
 }
 
 async function pushGit(version: string, message: string) {
+  const s = ora().start('Pushing to remote git repository')
   await execa('git', ['add', '.'])
   await execa('git', ['commit', '-m', message])
   await execa('git', ['tag', version])
-  await execa('git', ['push'])
+  const ret = await execa('git', ['push'])
+  logger.info(ret.stdout)
+  s.stop()
 }
 
 type packageJsonMap = {
@@ -106,6 +113,7 @@ export async function release() {
     const packageJsonMaps = updateVersion(expectVersion)
 
     if (!isPreRelease) {
+      await changelog({ count: 2 })
       await pushGit(expectVersion, `v${expectVersion}`)
     }
 

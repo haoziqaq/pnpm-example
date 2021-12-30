@@ -31,6 +31,7 @@ var lint_1 = require("./commands/lint");
 var gen_1 = require("./commands/gen");
 var preview_1 = require("./commands/preview");
 var release_1 = require("./commands/release");
+var changelog_1 = require("./commands/changelog");
 var program = new commander_1.Command();
 program.version("varlet-cli ".concat(require('../package.json').version)).usage('<command> [options]');
 program
@@ -55,6 +56,11 @@ program
     .option('-c, --component <componentName>', 'Test a specific component')
     .option('-cc --clearCache', 'Clear test cache')
     .action(jest_1.jest);
+program
+    .command('changelog')
+    .option('--count <count>', 'Release count')
+    .description('Generate changelog')
+    .action(changelog_1.changelog);
 program
     .command('release')
     .description('Release all packages and generate changelogs')

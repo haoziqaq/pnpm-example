@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.release = void 0;
 var inquirer_1 = __importDefault(require("inquirer"));
+var ora_1 = __importDefault(require("ora"));
 var execa_1 = __importDefault(require("execa"));
 var logger_1 = __importDefault(require("../shared/logger"));
 var semver_1 = __importDefault(require("semver"));
@@ -48,6 +49,7 @@ var glob_1 = __importDefault(require("glob"));
 var constant_1 = require("../shared/constant");
 var path_1 = require("path");
 var fs_extra_1 = require("fs-extra");
+var changelog_1 = require("./changelog");
 var releaseTypes = [
     'major',
     'minor',
@@ -71,19 +73,22 @@ function isWorktreeEmpty() {
 }
 function publish() {
     return __awaiter(this, void 0, void 0, function () {
-        var ret;
+        var s, ret;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, execa_1.default)('pnpm', [
-                        '-r',
-                        'publish',
-                        '--no-git-checks',
-                        '--access',
-                        'public'
-                    ])];
+                case 0:
+                    s = (0, ora_1.default)().start('Publishing all packages');
+                    return [4 /*yield*/, (0, execa_1.default)('pnpm', [
+                            '-r',
+                            'publish',
+                            '--no-git-checks',
+                            '--access',
+                            'public'
+                        ])];
                 case 1:
                     ret = _a.sent();
                     logger_1.default.info(ret.stdout);
+                    s.stop();
                     return [2 /*return*/];
             }
         });
@@ -91,9 +96,12 @@ function publish() {
 }
 function pushGit(version, message) {
     return __awaiter(this, void 0, void 0, function () {
+        var s, ret;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, execa_1.default)('git', ['add', '.'])];
+                case 0:
+                    s = (0, ora_1.default)().start('Pushing to remote git repository');
+                    return [4 /*yield*/, (0, execa_1.default)('git', ['add', '.'])];
                 case 1:
                     _a.sent();
                     return [4 /*yield*/, (0, execa_1.default)('git', ['commit', '-m', message])];
@@ -104,7 +112,9 @@ function pushGit(version, message) {
                     _a.sent();
                     return [4 /*yield*/, (0, execa_1.default)('git', ['push'])];
                 case 4:
-                    _a.sent();
+                    ret = _a.sent();
+                    logger_1.default.info(ret.stdout);
+                    s.stop();
                     return [2 /*return*/];
             }
         });
@@ -129,7 +139,7 @@ function release() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 7, , 8]);
+                    _a.trys.push([0, 8, , 9]);
                     currentVersion = require((0, path_1.resolve)(constant_1.CWD, 'package.json')).version;
                     if (!currentVersion) {
                         logger_1.default.error('Your package is missing the version field');
@@ -169,13 +179,16 @@ function release() {
                         return [2 /*return*/];
                     }
                     packageJsonMaps = updateVersion(expectVersion);
-                    if (!!isPreRelease) return [3 /*break*/, 5];
-                    return [4 /*yield*/, pushGit(expectVersion, "v".concat(expectVersion))];
+                    if (!!isPreRelease) return [3 /*break*/, 6];
+                    return [4 /*yield*/, (0, changelog_1.changelog)({ count: 2 })];
                 case 4:
                     _a.sent();
-                    _a.label = 5;
-                case 5: return [4 /*yield*/, publish()];
-                case 6:
+                    return [4 /*yield*/, pushGit(expectVersion, "v".concat(expectVersion))];
+                case 5:
+                    _a.sent();
+                    _a.label = 6;
+                case 6: return [4 /*yield*/, publish()];
+                case 7:
                     _a.sent();
                     if (isPreRelease) {
                         packageJsonMaps.forEach(function (_a) {
@@ -184,12 +197,12 @@ function release() {
                         });
                     }
                     logger_1.default.success("Release version ".concat(expectVersion, " successfully!"));
-                    return [3 /*break*/, 8];
-                case 7:
+                    return [3 /*break*/, 9];
+                case 8:
                     error_1 = _a.sent();
                     logger_1.default.error(error_1.toString());
-                    return [3 /*break*/, 8];
-                case 8: return [2 /*return*/];
+                    return [3 /*break*/, 9];
+                case 9: return [2 /*return*/];
             }
         });
     });
