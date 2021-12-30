@@ -47,7 +47,7 @@ program
 
 program
   .command('changelog')
-  .option('--count <count>', 'Release count')
+  .option('-c --count <count>', 'Release count')
   .description('Generate changelog')
   .action(changelog)
 
