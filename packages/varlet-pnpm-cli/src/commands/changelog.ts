@@ -9,7 +9,7 @@ interface ChangelogCommandOptions {
 }
 
 export function changelog({
-  releaseCount = 1,
+  releaseCount = 0,
   append = false,
 }: ChangelogCommandOptions): Promise<void> {
   const s = ora().start(`Generating changelog`);

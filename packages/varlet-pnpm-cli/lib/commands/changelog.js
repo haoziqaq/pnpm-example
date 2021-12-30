@@ -14,7 +14,7 @@ var fs_extra_1 = require("fs-extra");
 var constant_1 = require("../shared/constant");
 function changelog(_a) {
   var _b = _a.releaseCount,
-    releaseCount = _b === void 0 ? 1 : _b,
+    releaseCount = _b === void 0 ? 0 : _b,
     _c = _a.append,
     append = _c === void 0 ? false : _c;
   var s = (0, ora_1.default)().start("Generating changelog");
