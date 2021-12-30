@@ -1,9 +1,9 @@
 interface ChangelogCommandOptions {
-  append?: boolean;
+  file?: string;
   releaseCount?: number;
 }
 export declare function changelog({
   releaseCount,
-  append,
-}: ChangelogCommandOptions): Promise<void>;
+  file,
+}?: ChangelogCommandOptions): Promise<void>;
 export {};

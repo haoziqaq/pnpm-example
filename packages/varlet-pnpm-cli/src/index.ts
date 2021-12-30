@@ -69,7 +69,7 @@ program
 program
   .command("changelog")
   .option("-rc --releaseCount <releaseCount>", "Release count")
-  .option("-a --append <append>", "Append mode")
+  .option("-f --file <file>", "Changelog filename")
   .description("Generate changelog")
   .action(changelog);
 

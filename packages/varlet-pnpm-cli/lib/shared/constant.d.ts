@@ -19,7 +19,6 @@ export declare const TESTS_DIR_NAME = "__tests__";
 export declare const GENERATORS_DIR: string;
 export declare const UI_PACKAGE_JSON: string;
 export declare const CLI_PACKAGE_JSON: string;
-export declare const CHANGELOG_MD: string;
 export declare const SITE: string;
 export declare const SITE_OUTPUT_PATH: string;
 export declare const SITE_PUBLIC_PATH: string;

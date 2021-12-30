@@ -1,26 +1,26 @@
 import ora from "ora";
 import conventionalChangelog from "conventional-changelog";
 import { createWriteStream } from "fs-extra";
-import { CHANGELOG_MD } from "../shared/constant";
+import { resolve as resolvePath } from "path";
+import { CWD } from "../shared/constant";
 
 interface ChangelogCommandOptions {
-  append?: boolean;
+  file?: string;
   releaseCount?: number;
 }
 
 export function changelog({
   releaseCount = 0,
-  append = false,
-}: ChangelogCommandOptions): Promise<void> {
+  file = "CHANGELOG.md",
+}: ChangelogCommandOptions = {}): Promise<void> {
   const s = ora().start(`Generating changelog`);
 
   return new Promise((resolve) => {
     conventionalChangelog({
       preset: "angular",
       releaseCount,
-      append,
     })
-      .pipe(createWriteStream(CHANGELOG_MD))
+      .pipe(createWriteStream(resolvePath(CWD, file)))
       .on("close", () => {
         s.succeed(`Changelog generated success!`);
         resolve();

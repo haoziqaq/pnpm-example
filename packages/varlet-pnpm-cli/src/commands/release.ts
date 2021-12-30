@@ -113,7 +113,7 @@ export async function release() {
     const packageJsonMaps = updateVersion(expectVersion);
 
     if (!isPreRelease) {
-      await changelog({ append: true });
+      await changelog();
       await pushGit(expectVersion, `v${expectVersion}`);
     }
 
