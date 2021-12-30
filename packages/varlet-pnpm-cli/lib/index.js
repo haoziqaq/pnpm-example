@@ -88,7 +88,8 @@ program
   .action(jest_1.jest);
 program
   .command("changelog")
-  .option("-c --count <count>", "Release count")
+  .option("-rc --releaseCount <releaseCount>", "Release count")
+  .option("-a --append <append>", "Append mode")
   .description("Generate changelog")
   .action(changelog_1.changelog);
 program
