@@ -1,11 +1,17 @@
 import logger from "../shared/logger";
+import semver from "semver";
+
+function isVersion(message: string) {
+  return message.startsWith("v") && semver.valid(message.slice(1));
+}
 
 export function commitLint(gitParams: string) {
   const message = require("fs").readFileSync(gitParams, "utf-8").trim();
 
   const COMMIT_MESSAGE_RE =
     /^(revert|fix|feat|docs|perf|test|types|style|build|chore|release|refactor)(\(.+\))?: (.|\n)+/;
-  if (!COMMIT_MESSAGE_RE.test(message)) {
+
+  if (!isVersion(message) && !COMMIT_MESSAGE_RE.test(message)) {
     logger.error(`Commit message invalid`);
     logger.warning(`\
 The rules for commit messages are as follows
